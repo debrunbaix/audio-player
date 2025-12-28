@@ -1,21 +1,29 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -O2
-LDFLAGS = -lmpg123 -lao
+CFLAGS = -Wall -Wextra -O2 -I include
+LDFLAGS = -lmpg123 -lao -lsndfile
+
+SRC_DIR = src
+OBJ_DIR = obj
+INC_DIR = include
 
 TARGET = audio_player
-SRC = main.c
-OBJ = $(SRC:.c=.o)
+SRC = $(wildcard $(SRC_DIR)/*.c)
+OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+HEADERS = $(wildcard $(INC_DIR)/*.h)
 
-all: $(TARGET)
+all: $(OBJ_DIR) $(TARGET)
+
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
 
 $(TARGET): $(OBJ)
 	$(CC) $(OBJ) -o $(TARGET) $(LDFLAGS)
 
-%.o: %.c audio_player.h
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJ)
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
 	rm -f $(TARGET)
