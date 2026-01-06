@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include <sndfile.h>
 #include <ao/ao.h>
-#include "wav_player.h"
+#include "flac_player.h"
 
-#define WAV_BUFFER_SIZE 4096
+#define FLAC_BUFFER_SIZE 4096
 
-int init_wav_player(const char *file_path, AudioPlayer *player)
+int init_flac_player(const char *file_path, AudioPlayer *player)
 {
     SF_INFO sfinfo;
     SNDFILE *sndfile;
@@ -18,11 +18,11 @@ int init_wav_player(const char *file_path, AudioPlayer *player)
     sndfile = sf_open(file_path, SFM_READ, &sfinfo);
     if (sndfile == NULL)
     {
-        printf("[x] Failed to open WAV file: %s\n", sf_strerror(NULL));
+        printf("[x] Failed to open FLAC file: %s\n", sf_strerror(NULL));
         return ERROR;
     }
 
-    player->bufferSize = WAV_BUFFER_SIZE * sfinfo.channels * sizeof(short);
+    player->bufferSize = FLAC_BUFFER_SIZE * sfinfo.channels * sizeof(short);
     player->buffer = (unsigned char*) malloc(player->bufferSize);
     if (player->buffer == NULL) {
         printf("[x] Failed to allocate buffer.\n");
@@ -31,7 +31,7 @@ int init_wav_player(const char *file_path, AudioPlayer *player)
     }
 
     printf("\nInfos :\n");
-    printf("- Format : WAV\n");
+    printf("- Format : FLAC\n");
     printf("- SampleRate : %d\n", sfinfo.samplerate);
     if (sfinfo.channels == 1) printf("- Channels : Mono\n");
     if (sfinfo.channels == 2) printf("- Channels : Stereo\n");
@@ -56,17 +56,17 @@ int init_wav_player(const char *file_path, AudioPlayer *player)
     }
 
     player->handle = sndfile;
-    player->format = FORMAT_WAV;
+    player->format = FORMAT_FLAC;
 
     return SUCCESS;
 }
 
-int play_wav(AudioPlayer *player)
+int play_flac(AudioPlayer *player)
 {
     sf_count_t readCount;
     SNDFILE *sndfile = (SNDFILE*)player->handle;
 
-    while ((readCount = sf_read_short(sndfile, (short*)player->buffer, WAV_BUFFER_SIZE)) > 0)
+    while ((readCount = sf_read_short(sndfile, (short*)player->buffer, FLAC_BUFFER_SIZE)) > 0)
     {
         ao_play(player->dev, (char*)player->buffer, readCount * sizeof(short));
     }
@@ -74,7 +74,7 @@ int play_wav(AudioPlayer *player)
     return SUCCESS;
 }
 
-void cleanup_wav_player(AudioPlayer *player)
+void cleanup_flac_player(AudioPlayer *player)
 {
     SNDFILE *sndfile = (SNDFILE*)player->handle;
 

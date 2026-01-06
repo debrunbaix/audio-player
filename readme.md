@@ -9,7 +9,7 @@ Audio player in C.
 
 - [x] Play MP3 file
 - [x] Play WAV file
-- [ ] Play FLAC file
+- [x] Play FLAC file
 
 ## Project Structure
 
@@ -19,10 +19,12 @@ audio-player/
 │   ├── audio_format.h
 │   ├── audio_player.h
 │   ├── mp3_player.h
+│   ├── flac_player.h
 │   └── wav_player.h
 ├── src/              # Source files
 │   ├── main.c
 │   ├── mp3_player.c
+│   ├── flac_player.c
 │   └── wav_player.c
 ├── Makefile
 └── readme.md

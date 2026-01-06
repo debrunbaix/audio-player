@@ -4,6 +4,7 @@
 #include "audio_format.h"
 #include "mp3_player.h"
 #include "wav_player.h"
+#include "flac_player.h"
 
 /**
  * Display the program's banner and the audio file actually playing.

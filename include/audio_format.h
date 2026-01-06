@@ -10,7 +10,8 @@
 typedef enum {
   FORMAT_UNKNOWN,
   FORMAT_MP3,
-  FORMAT_WAV
+  FORMAT_WAV,
+  FORMAT_FLAC
 } AudioFormat;
 
 typedef struct {
